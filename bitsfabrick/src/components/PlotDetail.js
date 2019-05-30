@@ -16,10 +16,14 @@ class PlotDetail extends React.Component {
   handleChange = (event) => {
     const plot = { ...this.state.plot, title: event.target.value}; 
     this.setState({plot});
-  }
+  };
 
   handleClick = () => {
-    this.props.dispatch(plotActions.addPlot({title: "Star Wars"}))
+    this.props.dispatch(plotActions.addPlot(this.state.plot));
+  };
+
+  getPlanets = () => {
+    this.props.dispatch(plotActions.getPlanets());
   }
 
   render(){
@@ -32,6 +36,14 @@ class PlotDetail extends React.Component {
         <button onClick={this.handleClick}>
           Save
         </button>
+        <button onClick={this.getPlanets}>
+          Get Planets
+        </button>
+        {this.props.planets.map(planet => (
+          <div key={planet.name}>
+            {planet.name}
+          </div>
+        ))}
       </div>
     );
   }
@@ -39,7 +51,8 @@ class PlotDetail extends React.Component {
 
 function mapStateToProps(state){
   return {
-    plots: state.plotsState.plots
+    plots: state.plotsState.plots,
+    planets: state.plotsState.planetsSearchResult
   }
 }
 
