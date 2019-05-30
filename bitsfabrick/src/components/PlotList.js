@@ -14,9 +14,13 @@ class PlotList extends React.Component {
     return (
       <div>
        <Link to="detail">
-            Create Plot List 
+          Create Plot List 
        </Link>
-       {this.props.plots.length}
+       {this.props.plots.map(plot => (
+          <div key={plot.title}>
+            {plot.title}
+          </div>
+        ))}
       </div>
     );
   }

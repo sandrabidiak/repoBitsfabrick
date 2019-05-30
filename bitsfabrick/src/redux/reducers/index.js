@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import plots from './plotReducer';
+import plotReducer from './plotReducer';
 
 const rootReducer = combineReducers({
-    plotsState: plots
+    plotsState: plotReducer
 });
 
 export default rootReducer;
