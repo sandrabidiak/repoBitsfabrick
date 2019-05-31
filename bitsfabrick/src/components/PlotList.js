@@ -13,10 +13,10 @@ class PlotList extends React.Component {
   render(){
     return (
       <div>
-       <Link to="detail">
+        <Link to="detail">
           Create Plot List 
-       </Link>
-       {this.props.plots.map(plot => (
+        </Link>
+        {this.props.plots.map(plot => (
           <div key={plot.title}>
             {plot.title}
           </div>

@@ -10,7 +10,7 @@ class PlotDetail extends React.Component {
       plot: {
         title: ''
       },
-      planeteSearch: ''
+      planetsSearch: ''
     };
   }
 
@@ -24,26 +24,28 @@ class PlotDetail extends React.Component {
   };
 
   onPlanetSearchChange = (event) => {
-    const planeteSearch = event.target.value; 
-    this.setState({planeteSearch: planeteSearch});
+    const planetsSearch = event.target.value; 
+    this.setState({planetsSearch: planetsSearch});
   }; 
 
   getPlanets = () => {
-    this.props.dispatch(plotActions.getPlanets(this.state.planeteSearch));
+    this.props.dispatch(plotActions.getPlanets(this.state.planetsSearch));
   }
 
   render(){
     return (
       <div>
-        <Link to="/">
-          back
-        </Link>
-        <input type="text" value={this.state.plot.title} onChange={this.handleChange} />
-        <button onClick={this.handleClick}>
-          Save
-        </button>
         <div>
-          <input type="text" value={this.state.planeteSearch} onChange={this.onPlanetSearchChange} />
+          <Link to="/">
+            Back
+          </Link>
+          <input type="text" value={this.state.plot.title} onChange={this.handleChange} />
+          <button onClick={this.handleClick}>
+            Save
+          </button>
+        </div>  
+        <div>
+          <input type="text" value={this.state.planetsSearch} onChange={this.onPlanetSearchChange} />
           <button onClick={this.getPlanets}>
             Get Planets
           </button>

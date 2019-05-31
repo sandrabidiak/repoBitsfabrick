@@ -6,7 +6,6 @@ import { getPlanetsSuccess } from '../../redux/actions/plotActions';
 export function* callGetPlanets(action){
    const resp = yield getPlanets(action.planetName);
    yield put(getPlanetsSuccess(resp.results));
-
 }
 
 export function* watchGetPlanets() {
