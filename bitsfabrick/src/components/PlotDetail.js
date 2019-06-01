@@ -8,15 +8,22 @@ class PlotDetail extends React.Component {
     super(props);
     this.state = {
       plot: {
-        title: ''
+        title: '',
+        description: ''
       },
-      planetsSearch: ''
+      planetsSearch: '',
+      charactersSearch: ''
     };
   }
 
-  handleChange = (event) => {
+  handleChangeTitle = (event) => {
     const plot = { ...this.state.plot, title: event.target.value}; 
-    this.setState({plot});
+    this.setState({plot: plot});
+  };
+
+  handleChangeDescription = (event) => {
+    const plot = { ...this.state.plot, description: event.target.value}; 
+    this.setState({plot: plot});
   };
 
   handleClick = () => {
@@ -25,24 +32,40 @@ class PlotDetail extends React.Component {
 
   onPlanetSearchChange = (event) => {
     const planetsSearch = event.target.value; 
-    this.setState({planetsSearch: planetsSearch});
+    this.setState({ planetsSearch: planetsSearch });
   }; 
 
   getPlanets = () => {
     this.props.dispatch(plotActions.getPlanets(this.state.planetsSearch));
   }
 
+  onCharacterSearchChange = (event) => {
+    const charactersSearch = event.target.value; 
+    this.setState({ charactersSearch: charactersSearch });
+  }; 
+
+  getCharacters = () => {
+    this.props.dispatch(plotActions.getCharacters(this.state.charactersSearch));
+  }
+
   render(){
     return (
       <div>
+        <Link to="/">
+          Back
+        </Link>
         <div>
-          <Link to="/">
-            Back
-          </Link>
-          <input type="text" value={this.state.plot.title} onChange={this.handleChange} />
-          <button onClick={this.handleClick}>
-            Save
-          </button>
+          <textarea 
+            type="text" 
+            placeholder="Give a title, you must..." 
+            value={this.state.plot.title} 
+            onChange={this.handleChangeTitle} />
+          <br/>
+          <textarea
+            type="text" 
+            placeholder="Give a description, you must..."
+            value={this.state.plot.description} 
+            onChange={this.handleChangeDescription} />
         </div>  
         <div>
           <input type="text" value={this.state.planetsSearch} onChange={this.onPlanetSearchChange} />
@@ -55,6 +78,20 @@ class PlotDetail extends React.Component {
             </div>
           ))}
         </div>  
+        <div>
+          <input type="text" value={this.state.charactersSearch} onChange={this.onCharacterSearchChange} />
+          <button onClick={this.getCharacters}>
+            Get Characters
+          </button>
+          {this.props.characters.map(character => (
+            <div key={character.name}>
+              {character.name}
+            </div>
+          ))}
+        </div> 
+        <button onClick={this.handleClick}>
+            Save
+        </button>
       </div>
     );
   }
@@ -63,7 +100,8 @@ class PlotDetail extends React.Component {
 function mapStateToProps(state){
   return {
     plots: state.plotsState.plots,
-    planets: state.plotsState.planetsSearchResult
+    planets: state.plotsState.planetsSearchResult,
+    characters: state.plotsState.charactersSearchResult
   }
 }
 

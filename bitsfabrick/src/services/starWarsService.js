@@ -7,3 +7,10 @@ export function getPlanets(name){
     );
 }
 
+export function getCharacters(name){
+    return fetch(baseUrl + 'people/?search=' + name)
+    .then(
+        resp => resp.json()
+    );
+}
+
