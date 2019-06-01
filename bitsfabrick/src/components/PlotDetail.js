@@ -7,27 +7,31 @@ class PlotDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      plot: {
-        title: '',
-        description: ''
-      },
+      title: '',
+      description: '',
+      selectedPlanets: [],
+      selectedCharacters: [],
       planetsSearch: '',
       charactersSearch: ''
     };
   }
 
   handleChangeTitle = (event) => {
-    const plot = { ...this.state.plot, title: event.target.value}; 
-    this.setState({plot: plot});
+    this.setState({title: event.target.value});
   };
 
   handleChangeDescription = (event) => {
-    const plot = { ...this.state.plot, description: event.target.value}; 
-    this.setState({plot: plot});
+    this.setState({description: event.target.value});
   };
 
   handleClick = () => {
-    this.props.dispatch(plotActions.addPlot(this.state.plot));
+    const plot = {
+      title: this.state.title, 
+      description: this.state.description,
+      planets: this.state.selectedPlanets,
+      characters: this.state.selectedCharacters
+    }
+    this.props.dispatch(plotActions.addPlot(plot));
   };
 
   onPlanetSearchChange = (event) => {
@@ -39,14 +43,36 @@ class PlotDetail extends React.Component {
     this.props.dispatch(plotActions.getPlanets(this.state.planetsSearch));
   }
 
-  onCharacterSearchChange = (event) => {
-    const charactersSearch = event.target.value; 
-    this.setState({ charactersSearch: charactersSearch });
-  }; 
-
   getCharacters = () => {
     this.props.dispatch(plotActions.getCharacters(this.state.charactersSearch));
   }
+
+  selectPlanet = (planet) => {
+    let found = this.state.selectedPlanets.find(
+      p => p.url === planet.url
+    );
+    if(!found){
+      const planets = [...this.state.selectedPlanets, planet];
+      this.setState({ selectedPlanets: planets });  
+    }
+    console.log(this.state);
+  }
+
+  selectCharacters = (character) => {
+    let found = this.state.selectedCharacters.find(
+      char => char.url === character.url
+    );
+    if(!found){
+      const characters = [...this.state.selectedCharacters, character];
+      this.setState({ selectedCharacters: characters });  
+    }
+    console.log(this.state);
+  }
+
+  onCharacterSearchChange = (event) => {
+    const charactersSearch = event.target.value; 
+    this.setState({ charactersSearch: charactersSearch });
+  };   
 
   render(){
     return (
@@ -58,33 +84,52 @@ class PlotDetail extends React.Component {
           <textarea 
             type="text" 
             placeholder="Give a title, you must..." 
-            value={this.state.plot.title} 
+            value={this.state.title} 
             onChange={this.handleChangeTitle} />
           <br/>
           <textarea
             type="text" 
             placeholder="Give a description, you must..."
-            value={this.state.plot.description} 
+            value={this.state.description} 
             onChange={this.handleChangeDescription} />
         </div>  
+        {this.state.selectedPlanets.map(planet => (
+          <div key={planet.name}>
+            {planet.name}
+          </div>
+        ))}
+        <br/>
+        {this.state.selectedCharacters.map(char => (
+          <div key={char.name}>
+            {char.name}
+          </div>
+        ))}
         <div>
-          <input type="text" value={this.state.planetsSearch} onChange={this.onPlanetSearchChange} />
+          <input 
+            type="text"
+            placeholder="Planet"  
+            value={this.state.planetsSearch} 
+            onChange={this.onPlanetSearchChange} />
           <button onClick={this.getPlanets}>
-            Get Planets
+            Select
           </button>
           {this.props.planets.map(planet => (
-            <div key={planet.name}>
+            <div key={planet.name} onClick={() => {this.selectPlanet(planet)}}>
               {planet.name}
             </div>
           ))}
         </div>  
         <div>
-          <input type="text" value={this.state.charactersSearch} onChange={this.onCharacterSearchChange} />
+          <input 
+            type="text" 
+            placeholder="Character" 
+            value={this.state.charactersSearch} 
+            onChange={this.onCharacterSearchChange} />
           <button onClick={this.getCharacters}>
-            Get Characters
+            Select
           </button>
           {this.props.characters.map(character => (
-            <div key={character.name}>
+            <div key={character.name} onClick={() => {this.selectCharacters(character)}}> 
               {character.name}
             </div>
           ))}
