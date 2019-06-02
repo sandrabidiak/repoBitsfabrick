@@ -10,7 +10,8 @@ function App() {
     <div className="App">
       <Switch>
         <Route exact path="/" component={PlotList} />
-        <Route path="/detail" component={PlotDetail} /> 
+        <Route path="/create" component={PlotDetail} /> 
+        <Route path="/:id" component={PlotDetail} />
         <Route path="/" render={() => (<Redirect to="/" />)} />
       </Switch>
     </div>

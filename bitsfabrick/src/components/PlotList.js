@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 class PlotList extends React.Component {
@@ -13,29 +13,33 @@ class PlotList extends React.Component {
   render(){
     return (
       <div>
-        <Link to="detail">
+        <Link to="create">
           Create Plot List 
         </Link>
-        {this.props.plots.map(plot => (
-          <div key={plot.id}>
-            {plot.title}
-            {plot.id}
-            <br/>
-            {plot.description}
-            <br/>
-            {plot.planets.map(planet => (
-              <div key={planet.name}>
-                {planet.name}
+        <div>
+          {this.props.plots.map(plot => (
+            <Route key={plot.id} render = { ({history}) => (
+              <div onClick={() => {history.push('/' + plot.id)}}>
+                {plot.title}
+                {plot.id}
+                <br/>
+                {plot.description}
+                <br/>
+                {plot.planets.map(planet => (
+                  <div key={planet.name}>
+                    {planet.name}
+                  </div>
+                ))}
+                <br/>
+                {plot.characters.map(char => (
+                  <div key={char.name}>
+                    {char.name}
+                  </div>
+                ))}
               </div>
-            ))}
-            <br/>
-            {plot.characters.map(char => (
-              <div key={char.name}>
-                {char.name}
-              </div>
-            ))}
-          </div>
-        ))}
+            )}/>
+          ))}
+        </div>
       </div>
     );
   }

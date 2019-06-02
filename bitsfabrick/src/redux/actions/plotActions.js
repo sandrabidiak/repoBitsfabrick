@@ -4,6 +4,10 @@ export function addPlot(plot) {
     return { type: types.ADD_PLOT, plot: plot };
 }
 
+export function updatePlot(plot) {
+    return { type: types.UPDATE_PLOT, plot: plot };
+}
+
 export function getPlanets(planetName) {
     return { type: types.GET_PLANETS, planetName: planetName };
 }

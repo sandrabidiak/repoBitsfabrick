@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as plotActions from '../redux/actions/plotActions';
 
@@ -7,6 +7,7 @@ class PlotDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      plotId: 0, 
       title: '',
       description: '',
       selectedPlanets: [],
@@ -19,6 +20,16 @@ class PlotDetail extends React.Component {
   componentDidMount() {
     this.props.dispatch(plotActions.resetPlanets());
     this.props.dispatch(plotActions.resetCharacters());
+    console.log(this.props.match.params.id);
+
+    this.state.plotId = this.props.match.params.id ? +this.props.match.params.id : undefined;
+    if(this.state.plotId){
+      let plot = this.props.plots.find(plot => plot.id === this.state.plotId)
+      this.setState({ title: plot.title });
+      this.setState({ description: plot.description });
+      this.setState({ selectedCharacters: plot.characters });
+      this.setState({ selectedPlanets: plot.planets });
+    }
   }
 
   handleChangeTitle = (event) => {
@@ -29,14 +40,26 @@ class PlotDetail extends React.Component {
     this.setState({description: event.target.value});
   };
 
-  handleClick = () => {
-    const plot = {
-      title: this.state.title, 
-      description: this.state.description,
-      planets: this.state.selectedPlanets,
-      characters: this.state.selectedCharacters
+  handleClick = (history) => {
+    if(!this.state.plotId){
+      const plot = {
+        title: this.state.title, 
+        description: this.state.description,
+        planets: this.state.selectedPlanets,
+        characters: this.state.selectedCharacters  
+      }
+      this.props.dispatch(plotActions.addPlot(plot));
+    } else {
+      const plot = {
+        id: this.state.plotId,
+        title: this.state.title, 
+        description: this.state.description,
+        planets: this.state.selectedPlanets,
+        characters: this.state.selectedCharacters  
+      }
+      this.props.dispatch(plotActions.updatePlot(plot));
     }
-    this.props.dispatch(plotActions.addPlot(plot));
+    history.push('/');
   };
 
   onPlanetSearchChange = (event) => {
@@ -151,9 +174,11 @@ class PlotDetail extends React.Component {
             </div>
           ))}
         </div> 
-        <button onClick={this.handleClick}>
-            Save
-        </button>
+        <Route render = { ({history}) => (
+          <button onClick={() => { this.handleClick(history)}}>
+              Save
+          </button>
+        )} />
       </div>
     );
   }
