@@ -20,6 +20,20 @@ class PlotList extends React.Component {
           <div key={plot.id}>
             {plot.title}
             {plot.id}
+            <br/>
+            {plot.description}
+            <br/>
+            {plot.planets.map(planet => (
+              <div key={planet.name}>
+                {planet.name}
+              </div>
+            ))}
+            <br/>
+            {plot.characters.map(char => (
+              <div key={char.name}>
+                {char.name}
+              </div>
+            ))}
           </div>
         ))}
       </div>

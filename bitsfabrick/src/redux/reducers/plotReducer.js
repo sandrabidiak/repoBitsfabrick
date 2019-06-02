@@ -21,6 +21,12 @@ export default function plotReducer (
         case types.GET_PLANETS_SUCCESS:
             newState = Object.assign({} , state, { planetsSearchResult: action.planets });
             return newState;
+        case types.RESET_PLANETS:
+            newState = Object.assign({} , state, { planetsSearchResult: [] });
+            return newState;
+        case types.RESET_CHARACTERS:
+            newState = Object.assign({} , state, { charactersSearchResult: [] });
+            return newState;
         case types.GET_CHARACTERS_SUCCESS:
             newState = Object.assign({} , state, { charactersSearchResult: action.characters });
             return newState;

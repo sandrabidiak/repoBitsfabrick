@@ -16,6 +16,11 @@ class PlotDetail extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.props.dispatch(plotActions.resetPlanets());
+    this.props.dispatch(plotActions.resetCharacters());
+  }
+
   handleChangeTitle = (event) => {
     this.setState({title: event.target.value});
   };
@@ -38,7 +43,12 @@ class PlotDetail extends React.Component {
     const planetsSearch = event.target.value; 
     this.setState({ planetsSearch: planetsSearch });
   }; 
-
+ 
+  onCharacterSearchChange = (event) => {
+    const charactersSearch = event.target.value; 
+    this.setState({ charactersSearch: charactersSearch });
+  }; 
+ 
   getPlanets = () => {
     this.props.dispatch(plotActions.getPlanets(this.state.planetsSearch));
   }
@@ -55,7 +65,6 @@ class PlotDetail extends React.Component {
       const planets = [...this.state.selectedPlanets, planet];
       this.setState({ selectedPlanets: planets });  
     }
-    console.log(this.state);
   }
 
   selectCharacters = (character) => {
@@ -66,13 +75,21 @@ class PlotDetail extends React.Component {
       const characters = [...this.state.selectedCharacters, character];
       this.setState({ selectedCharacters: characters });  
     }
-    console.log(this.state);
   }
 
-  onCharacterSearchChange = (event) => {
-    const charactersSearch = event.target.value; 
-    this.setState({ charactersSearch: charactersSearch });
-  };   
+  removePlanet = (planet) => {
+    const planets = this.state.selectedPlanets.filter (
+      p => p.url !== planet.url 
+    );
+    this.setState({ selectedPlanets: planets });
+  }
+
+  removeCharacter = (character) => {
+    const characters = this.state.selectedCharacters.filter (
+      char => char.url !== character.url 
+    );
+    this.setState({ selectedCharacters: characters });
+  }
 
   render(){
     return (
@@ -94,13 +111,13 @@ class PlotDetail extends React.Component {
             onChange={this.handleChangeDescription} />
         </div>  
         {this.state.selectedPlanets.map(planet => (
-          <div key={planet.name}>
+          <div key={planet.name} onClick={() => {this.removePlanet(planet)}}>
             {planet.name}
           </div>
         ))}
         <br/>
         {this.state.selectedCharacters.map(char => (
-          <div key={char.name}>
+          <div key={char.name} onClick={() => {this.removeCharacter(char)}}>
             {char.name}
           </div>
         ))}
