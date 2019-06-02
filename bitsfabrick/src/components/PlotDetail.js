@@ -40,7 +40,7 @@ class PlotDetail extends React.Component {
     this.setState({description: event.target.value});
   };
 
-  handleClick = (history) => {
+  handleSave = (history) => {
     if(!this.state.plotId){
       const plot = {
         title: this.state.title, 
@@ -61,6 +61,11 @@ class PlotDetail extends React.Component {
     }
     history.push('/');
   };
+
+  handleDelete = (history) => {
+    this.props.dispatch(plotActions.deletePlot(this.state.plotId));
+    history.push('/');
+  }
 
   onPlanetSearchChange = (event) => {
     const planetsSearch = event.target.value; 
@@ -115,6 +120,17 @@ class PlotDetail extends React.Component {
   }
 
   render(){
+    let deleteButton;
+    if(this.state.plotId) {
+      deleteButton = <Route render = {
+        ({history}) => (
+        <button onClick={() => { this.handleDelete(history)}}>
+            Delete
+        </button>
+        )
+      } />
+    }
+
     return (
       <div>
         <Link to="/">
@@ -175,10 +191,11 @@ class PlotDetail extends React.Component {
           ))}
         </div> 
         <Route render = { ({history}) => (
-          <button onClick={() => { this.handleClick(history)}}>
+          <button onClick={() => { this.handleSave(history)}}>
               Save
           </button>
         )} />
+        {deleteButton}
       </div>
     );
   }

@@ -8,6 +8,10 @@ export function updatePlot(plot) {
     return { type: types.UPDATE_PLOT, plot: plot };
 }
 
+export function deletePlot(id) {
+    return { type: types.DELETE_PLOT, id: id };
+}
+
 export function getPlanets(planetName) {
     return { type: types.GET_PLANETS, planetName: planetName };
 }

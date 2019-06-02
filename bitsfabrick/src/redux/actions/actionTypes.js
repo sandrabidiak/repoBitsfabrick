@@ -1,5 +1,6 @@
 export const ADD_PLOT = "ADD_PLOT";
 export const UPDATE_PLOT = "UPDATE_PLOT";
+export const DELETE_PLOT = "DELETE_PLOT";
 export const GET_PLANETS = "GET_PLANETS";
 export const GET_PLANETS_SUCCESS = "GET_PLANETS_SUCCESS";
 export const RESET_PLANETS = "RESET_PLANETS";

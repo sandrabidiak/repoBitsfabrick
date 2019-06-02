@@ -32,6 +32,13 @@ export default function plotReducer (
             newState = Object.assign({} , state, { plots: updatedPlots });
             return newState;
 
+        case types.DELETE_PLOT:
+            const filteredPlots = state.plots.filter (
+                plot => plot.id !== action.id
+            )
+            newState = Object.assign({} , state, { plots: filteredPlots });
+            return newState;        
+
         case types.GET_PLANETS_SUCCESS:
             newState = Object.assign({} , state, { planetsSearchResult: action.planets });
             return newState;
