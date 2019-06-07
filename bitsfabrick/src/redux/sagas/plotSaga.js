@@ -1,4 +1,4 @@
-import { takeEvery, put, all, call, delay, fork, join, take } from 'redux-saga/effects';
+import { takeEvery, put, all, call, delay, fork, join, take, cancel, cancelled } from 'redux-saga/effects';
 import * as types from '../actions/actionTypes';
 import { getPlanets, getCharacters } from '../../services/starWarsService';
 import * as plotActions from '../actions/plotActions'
@@ -30,7 +30,6 @@ export function* watchGetCharacters() {
     yield takeEvery(types.GET_CHARACTERS, callGetCharacters)
 }
 
-/*
 function* task() {
     try {
         let c = 0
@@ -40,23 +39,31 @@ function* task() {
         }
     } catch(e) {
         console.log(e)
+    } finally {
+        if (yield cancelled) 
+        console.log('cancelled')
     }
 }
 
 let loopTask
 function* testSaga() {
-    loopTask = yield fork(task)
-    loopTask && (yield join(loopTask))
-    yield call(task)
-    yield put(plotActions.getPlanets(''))
+     loopTask = yield fork(task)
+    /* loopTask && (yield join(loopTask))
+     yield call(task)*/
+     
+     yield put(plotActions.getPlanets(''))
+    const action = yield take(types.GET_CHARACTERS)
+    if (action.type === types.GET_CHARACTERS)
+      yield cancel(loopTask)
 
-    console.log('TZask started')
+    console.log('Task started', action)
+    
 }
-*/
+
 
 export default function* rootSaga() {
     yield all([
-        //testSaga(),
+        testSaga(),
         watchGetPlanets(),
         watchGetCharacters()
     ])
